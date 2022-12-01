@@ -1,10 +1,43 @@
-from webbrowser import get
-
+import random
 
 MAX_LINES = 3
 MAX_BET = 1000
 MIN_BET = 1
 
+ROWS = 3
+COLS = 3
+
+symbol_count = {
+    "🍎": 5,
+    "🍌": 4,
+    "🍐": 3,
+    "🍑": 2,
+}
+
+def get_slot_machine_spin(rows, cols, symbols):
+    all_symbols = []
+    for symbol, symbol_count in symbols.items():
+        for _ in range (symbol_count): # underscore is annoymous value.
+            all_symbols.append(symbol)
+            
+    columns = [] # column list
+    for _ in range(cols): #generate column for every column we have
+        column = []
+        current_symbols = all_symbols [:] #current symbols is equal to a copy of all symbols available
+        for _ in range (rows):
+            value = random.choice(current_symbols) #picking a random choice of the current values
+            current_symbols.remove(value) #removing the chosen value from the symbols list 
+            column.append(value) #adding the picked value in the column list 
+            
+        columns.append(column)
+        
+    return columns
+
+def print_slot_machine(columns):
+    for row in range(len(columns[0])):
+        for column in columns:
+    
+            
 def deposit():
     while True:
         amount = input("How much would you like to deposit? £")
