@@ -8,11 +8,32 @@ ROWS = 3
 COLS = 3
 
 symbol_count = {
-    "🍎": 5,
-    "🍌": 4,
-    "🍐": 3,
-    "🍑": 2,
+    "A": 2,
+    "B": 4,
+    "C": 6,
+    "D": 8,
 }
+
+symbol_value = {
+    "A": 5,
+    "B": 4,
+    "C": 3,
+    "D": 2,
+}
+
+
+def check_winnings(coloumns, lines, bet, values):
+    winnings = 0
+    for line in range(lines):
+        symbol = coloumns[0][line]
+        for column in coloumns:
+            symbol_to_check = column[line]
+            if symbol != symbol_to_check:
+                break
+        else:
+            winnings += values[symbol] * bet
+
+    return winnings
 
 
 def get_slot_machine_spin(rows, cols, symbols):
@@ -42,9 +63,11 @@ def print_slot_machine(columns):
     for row in range(len(columns[0])):
         for i, column in enumerate(columns):
             if i != len(columns) - 1:
-                print(column[row], "|")
+                print(column[row], end=" | ")
             else:
-                print(column[row])
+                print(column[row], end="")
+
+        print()
 
 
 def deposit():
@@ -65,10 +88,13 @@ def deposit():
 def get_number_of_lines():
     while True:
         lines = input(
-            "Enter the number of lines to bet on (1-" + str(MAX_LINES) + ")? ")
+            "Enter the number of lines to bet on (1-" + str(MAX_LINES) + ")? "
+        )
         if lines.isdigit():
             lines = int(lines)
-            if 1 <= lines <= MAX_LINES:  # checks if lines is equal or greater than 1 and less than or equal to the max lines
+            if (
+                1 <= lines <= MAX_LINES
+            ):  # checks if lines is equal or greater than 1 and less than or equal to the max lines
                 break
             else:
                 print("Enter a valid number of lines")
@@ -100,12 +126,15 @@ def main():
 
         if total_bet > balance:
             print(
-                f"Your balance is too low to bet, please deposit more. Your current balance is: £{balance} ")
+                f"Your balance is too low to bet, please deposit more. Your current balance is: £{balance} "
+            )
         else:
             break
 
-    print(
-        f"You are betting ${bet} on {lines}. Total bet is equal to: ${total_bet}")
+    print(f"You are betting ${bet} on {lines}. Total bet is equal to: ${total_bet}")
+
+    slots = get_slot_machine_spin(ROWS, COLS, symbol_count)
+    print_slot_machine(slots)
 
 
 main()
